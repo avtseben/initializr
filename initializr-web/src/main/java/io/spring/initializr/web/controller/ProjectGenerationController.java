@@ -141,14 +141,6 @@ public abstract class ProjectGenerationController<R extends ProjectRequest> {
 				"application/x-compress");
 	}
 
-	@RequestMapping(path = "/artifact.tgz", produces = "application/x-compress")
-	public ResponseEntity<byte[]> artifactTgz(R request) throws IOException {
-
-		logger.info(">>> /artifact.tgz");
-		// TODO modify request
-		return springTgz(request);
-	}
-
 	private TarArchiveOutputStream createTarArchiveOutputStream(OutputStream output) {
 		try {
 			return new TarArchiveOutputStream(new GzipCompressorOutputStream(output));
