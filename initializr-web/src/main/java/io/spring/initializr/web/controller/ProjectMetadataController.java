@@ -16,11 +16,6 @@
 
 package io.spring.initializr.web.controller;
 
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
-import javax.servlet.http.HttpServletResponse;
-
 import io.spring.initializr.generator.version.Version;
 import io.spring.initializr.metadata.DependencyMetadata;
 import io.spring.initializr.metadata.DependencyMetadataProvider;
@@ -35,7 +30,8 @@ import io.spring.initializr.web.mapper.InitializrMetadataV22JsonMapper;
 import io.spring.initializr.web.mapper.InitializrMetadataV2JsonMapper;
 import io.spring.initializr.web.mapper.InitializrMetadataVersion;
 import io.spring.initializr.web.project.InvalidProjectRequestException;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -46,6 +42,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
 /**
  * {@link Controller} that exposes metadata and service configuration.
  *
@@ -54,6 +54,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class ProjectMetadataController extends AbstractMetadataController {
 
+	Logger log = LoggerFactory.getLogger(this.getClass());
 	/**
 	 * HAL JSON content type.
 	 */
@@ -62,7 +63,7 @@ public class ProjectMetadataController extends AbstractMetadataController {
 	private final DependencyMetadataProvider dependencyMetadataProvider;
 
 	public ProjectMetadataController(InitializrMetadataProvider metadataProvider,
-			DependencyMetadataProvider dependencyMetadataProvider) {
+									 DependencyMetadataProvider dependencyMetadataProvider) {
 		super(metadataProvider);
 		this.dependencyMetadataProvider = dependencyMetadataProvider;
 	}
@@ -70,37 +71,44 @@ public class ProjectMetadataController extends AbstractMetadataController {
 	@RequestMapping(path = "/metadata/config", produces = "application/json")
 	@ResponseBody
 	public InitializrMetadata config() {
+		log.info(">>> /metadata/config");
 		return this.metadataProvider.get();
 	}
 
 	@RequestMapping(path = { "/", "/metadata/client" }, produces = "application/hal+json")
 	public ResponseEntity<String> serviceCapabilitiesHal() {
+		log.info(">>> /metadata/client");
 		return serviceCapabilitiesFor(InitializrMetadataVersion.V2_1, HAL_JSON_CONTENT_TYPE);
 	}
 
 	@RequestMapping(path = { "/", "/metadata/client" }, produces = { "application/vnd.initializr.v2.2+json" })
 	public ResponseEntity<String> serviceCapabilitiesV22() {
+		log.info(">>> /metadata/client2_1");
 		return serviceCapabilitiesFor(InitializrMetadataVersion.V2_2);
 	}
 
 	@RequestMapping(path = { "/", "/metadata/client" },
 			produces = { "application/vnd.initializr.v2.1+json", "application/json" })
 	public ResponseEntity<String> serviceCapabilitiesV21() {
+		log.info(">>> /metadata/client2_2");
 		return serviceCapabilitiesFor(InitializrMetadataVersion.V2_1);
 	}
 
 	@RequestMapping(path = { "/", "/metadata/client" }, produces = "application/vnd.initializr.v2+json")
 	public ResponseEntity<String> serviceCapabilitiesV2() {
+		log.info(">>> /metadata/client2");
 		return serviceCapabilitiesFor(InitializrMetadataVersion.V2);
 	}
 
 	@RequestMapping(path = "/dependencies", produces = "application/vnd.initializr.v2.2+json")
 	public ResponseEntity<String> dependenciesV22(@RequestParam(required = false) String bootVersion) {
+		log.info(">>> /dependencies22");
 		return dependenciesFor(InitializrMetadataVersion.V2_2, bootVersion);
 	}
 
 	@RequestMapping(path = "/dependencies", produces = { "application/vnd.initializr.v2.1+json", "application/json" })
 	public ResponseEntity<String> dependenciesV21(@RequestParam(required = false) String bootVersion) {
+		log.info(">>> /dependencies21");
 		return dependenciesFor(InitializrMetadataVersion.V2_1, bootVersion);
 	}
 

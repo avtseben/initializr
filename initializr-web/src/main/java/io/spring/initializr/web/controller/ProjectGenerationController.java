@@ -16,20 +16,6 @@
 
 package io.spring.initializr.web.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-
-import javax.servlet.http.HttpServletResponse;
-
 import io.spring.initializr.generator.buildsystem.BuildSystem;
 import io.spring.initializr.generator.buildsystem.maven.MavenBuildSystem;
 import io.spring.initializr.generator.project.ProjectDescription;
@@ -49,7 +35,6 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -59,6 +44,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * Base {@link Controller} that provides endpoints for project generation.
@@ -124,6 +122,7 @@ public abstract class ProjectGenerationController<R extends ProjectRequest> {
 
 	@RequestMapping("/starter.zip")
 	public ResponseEntity<byte[]> springZip(R request) throws IOException {
+		logger.info(">>> /starter.zip");
 		ProjectGenerationResult result = this.projectGenerationInvoker.invokeProjectStructureGeneration(request);
 		Path archive = createArchive(result, "zip", ZipArchiveOutputStream::new, ZipArchiveEntry::new,
 				ZipArchiveEntry::setUnixMode);
@@ -132,6 +131,7 @@ public abstract class ProjectGenerationController<R extends ProjectRequest> {
 
 	@RequestMapping(path = "/starter.tgz", produces = "application/x-compress")
 	public ResponseEntity<byte[]> springTgz(R request) throws IOException {
+		logger.info(">>> /starter.tgz");
 		ProjectGenerationResult result = this.projectGenerationInvoker.invokeProjectStructureGeneration(request);
 		Path archive = createArchive(result, "tar.gz", this::createTarArchiveOutputStream, TarArchiveEntry::new,
 				TarArchiveEntry::setMode);
@@ -139,11 +139,18 @@ public abstract class ProjectGenerationController<R extends ProjectRequest> {
 				"application/x-compress");
 	}
 
+	@RequestMapping(path = "/artifact.tgz", produces = "application/x-compress")
+	public ResponseEntity<byte[]> artifactTgz(R request) throws IOException {
+
+		logger.info(">>> /artifact.tgz");
+		//TODO modify request
+		return springTgz(request);
+	}
+
 	private TarArchiveOutputStream createTarArchiveOutputStream(OutputStream output) {
 		try {
 			return new TarArchiveOutputStream(new GzipCompressorOutputStream(output));
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new IllegalStateException(ex);
 		}
 	}

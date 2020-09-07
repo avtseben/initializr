@@ -16,12 +16,14 @@
 
 package io.spring.initializr.web.controller;
 
-import java.util.Map;
-
 import io.spring.initializr.metadata.InitializrMetadataProvider;
 import io.spring.initializr.web.project.ProjectGenerationInvoker;
 import io.spring.initializr.web.project.ProjectRequest;
 import io.spring.initializr.web.project.WebProjectRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 /**
  * A default {@link ProjectGenerationController} that uses a standard
@@ -31,13 +33,16 @@ import io.spring.initializr.web.project.WebProjectRequest;
  */
 public class DefaultProjectGenerationController extends ProjectGenerationController<ProjectRequest> {
 
+	Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	public DefaultProjectGenerationController(InitializrMetadataProvider metadataProvider,
-			ProjectGenerationInvoker<ProjectRequest> projectGenerationInvoker) {
+											  ProjectGenerationInvoker<ProjectRequest> projectGenerationInvoker) {
 		super(metadataProvider, projectGenerationInvoker);
 	}
 
 	@Override
 	public ProjectRequest projectRequest(Map<String, String> headers) {
+		logger.info(">>> projectRequest. init request");
 		WebProjectRequest request = new WebProjectRequest();
 		request.getParameters().putAll(headers);
 		request.initialize(getMetadata());
