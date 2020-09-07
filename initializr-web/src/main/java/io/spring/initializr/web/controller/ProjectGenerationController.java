@@ -143,7 +143,7 @@ public abstract class ProjectGenerationController<R extends ProjectRequest> {
 	public ResponseEntity<byte[]> artifactTgz(R request) throws IOException {
 
 		logger.info(">>> /artifact.tgz");
-		//TODO modify request
+		// TODO modify request
 		return springTgz(request);
 	}
 

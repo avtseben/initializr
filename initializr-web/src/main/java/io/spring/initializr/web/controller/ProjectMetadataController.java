@@ -55,6 +55,7 @@ import java.util.concurrent.TimeUnit;
 public class ProjectMetadataController extends AbstractMetadataController {
 
 	Logger log = LoggerFactory.getLogger(this.getClass());
+
 	/**
 	 * HAL JSON content type.
 	 */
