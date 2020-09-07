@@ -20,8 +20,8 @@ import io.spring.initializr.metadata.InitializrMetadataProvider;
 import io.spring.initializr.web.project.ProjectGenerationInvoker;
 import io.spring.initializr.web.project.ProjectRequest;
 import io.spring.initializr.web.project.WebProjectRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.Map;
 
@@ -33,7 +33,7 @@ import java.util.Map;
  */
 public class DefaultProjectGenerationController extends ProjectGenerationController<ProjectRequest> {
 
-	Logger logger = LoggerFactory.getLogger(this.getClass());
+	private static final Log logger = LogFactory.getLog(DefaultProjectGenerationController.class);
 
 	public DefaultProjectGenerationController(InitializrMetadataProvider metadataProvider,
 											  ProjectGenerationInvoker<ProjectRequest> projectGenerationInvoker) {

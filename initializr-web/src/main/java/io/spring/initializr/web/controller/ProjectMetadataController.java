@@ -30,8 +30,8 @@ import io.spring.initializr.web.mapper.InitializrMetadataV22JsonMapper;
 import io.spring.initializr.web.mapper.InitializrMetadataV2JsonMapper;
 import io.spring.initializr.web.mapper.InitializrMetadataVersion;
 import io.spring.initializr.web.project.InvalidProjectRequestException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -54,7 +54,7 @@ import java.util.concurrent.TimeUnit;
 @Controller
 public class ProjectMetadataController extends AbstractMetadataController {
 
-	Logger log = LoggerFactory.getLogger(this.getClass());
+	private static final Log logger = LogFactory.getLog(ProjectGenerationController.class);
 
 	/**
 	 * HAL JSON content type.
@@ -72,44 +72,44 @@ public class ProjectMetadataController extends AbstractMetadataController {
 	@RequestMapping(path = "/metadata/config", produces = "application/json")
 	@ResponseBody
 	public InitializrMetadata config() {
-		log.info(">>> /metadata/config");
+		logger.info(">>> /metadata/config");
 		return this.metadataProvider.get();
 	}
 
 	@RequestMapping(path = { "/", "/metadata/client" }, produces = "application/hal+json")
 	public ResponseEntity<String> serviceCapabilitiesHal() {
-		log.info(">>> /metadata/client");
+		logger.info(">>> /metadata/client");
 		return serviceCapabilitiesFor(InitializrMetadataVersion.V2_1, HAL_JSON_CONTENT_TYPE);
 	}
 
 	@RequestMapping(path = { "/", "/metadata/client" }, produces = { "application/vnd.initializr.v2.2+json" })
 	public ResponseEntity<String> serviceCapabilitiesV22() {
-		log.info(">>> /metadata/client2_1");
+		logger.info(">>> /metadata/client2_1");
 		return serviceCapabilitiesFor(InitializrMetadataVersion.V2_2);
 	}
 
 	@RequestMapping(path = { "/", "/metadata/client" },
 			produces = { "application/vnd.initializr.v2.1+json", "application/json" })
 	public ResponseEntity<String> serviceCapabilitiesV21() {
-		log.info(">>> /metadata/client2_2");
+		logger.info(">>> /metadata/client2_2");
 		return serviceCapabilitiesFor(InitializrMetadataVersion.V2_1);
 	}
 
 	@RequestMapping(path = { "/", "/metadata/client" }, produces = "application/vnd.initializr.v2+json")
 	public ResponseEntity<String> serviceCapabilitiesV2() {
-		log.info(">>> /metadata/client2");
+		logger.info(">>> /metadata/client2");
 		return serviceCapabilitiesFor(InitializrMetadataVersion.V2);
 	}
 
 	@RequestMapping(path = "/dependencies", produces = "application/vnd.initializr.v2.2+json")
 	public ResponseEntity<String> dependenciesV22(@RequestParam(required = false) String bootVersion) {
-		log.info(">>> /dependencies22");
+		logger.info(">>> /dependencies22");
 		return dependenciesFor(InitializrMetadataVersion.V2_2, bootVersion);
 	}
 
 	@RequestMapping(path = "/dependencies", produces = { "application/vnd.initializr.v2.1+json", "application/json" })
 	public ResponseEntity<String> dependenciesV21(@RequestParam(required = false) String bootVersion) {
-		log.info(">>> /dependencies21");
+		logger.info(">>> /dependencies21");
 		return dependenciesFor(InitializrMetadataVersion.V2_1, bootVersion);
 	}
 
