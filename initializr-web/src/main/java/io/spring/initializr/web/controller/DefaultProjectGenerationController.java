@@ -16,14 +16,14 @@
 
 package io.spring.initializr.web.controller;
 
+import java.util.Map;
+
 import io.spring.initializr.metadata.InitializrMetadataProvider;
 import io.spring.initializr.web.project.ProjectGenerationInvoker;
 import io.spring.initializr.web.project.ProjectRequest;
 import io.spring.initializr.web.project.WebProjectRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.util.Map;
 
 /**
  * A default {@link ProjectGenerationController} that uses a standard
@@ -36,7 +36,7 @@ public class DefaultProjectGenerationController extends ProjectGenerationControl
 	private static final Log logger = LogFactory.getLog(DefaultProjectGenerationController.class);
 
 	public DefaultProjectGenerationController(InitializrMetadataProvider metadataProvider,
-											  ProjectGenerationInvoker<ProjectRequest> projectGenerationInvoker) {
+			ProjectGenerationInvoker<ProjectRequest> projectGenerationInvoker) {
 		super(metadataProvider, projectGenerationInvoker);
 	}
 

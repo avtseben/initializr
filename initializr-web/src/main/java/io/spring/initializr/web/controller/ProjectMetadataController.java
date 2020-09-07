@@ -16,6 +16,11 @@
 
 package io.spring.initializr.web.controller;
 
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import javax.servlet.http.HttpServletResponse;
+
 import io.spring.initializr.generator.version.Version;
 import io.spring.initializr.metadata.DependencyMetadata;
 import io.spring.initializr.metadata.DependencyMetadataProvider;
@@ -32,6 +37,7 @@ import io.spring.initializr.web.mapper.InitializrMetadataVersion;
 import io.spring.initializr.web.project.InvalidProjectRequestException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,10 +47,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * {@link Controller} that exposes metadata and service configuration.
@@ -64,7 +66,7 @@ public class ProjectMetadataController extends AbstractMetadataController {
 	private final DependencyMetadataProvider dependencyMetadataProvider;
 
 	public ProjectMetadataController(InitializrMetadataProvider metadataProvider,
-									 DependencyMetadataProvider dependencyMetadataProvider) {
+			DependencyMetadataProvider dependencyMetadataProvider) {
 		super(metadataProvider);
 		this.dependencyMetadataProvider = dependencyMetadataProvider;
 	}
