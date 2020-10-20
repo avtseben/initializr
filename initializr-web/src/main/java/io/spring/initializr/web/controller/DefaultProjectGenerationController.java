@@ -19,6 +19,7 @@ package io.spring.initializr.web.controller;
 import java.util.Map;
 
 import io.spring.initializr.metadata.InitializrMetadataProvider;
+import io.spring.initializr.web.project.ArchetypeProcessor;
 import io.spring.initializr.web.project.ProjectGenerationInvoker;
 import io.spring.initializr.web.project.ProjectRequest;
 import io.spring.initializr.web.project.WebProjectRequest;
@@ -36,8 +37,8 @@ public class DefaultProjectGenerationController extends ProjectGenerationControl
 	private static final Log logger = LogFactory.getLog(DefaultProjectGenerationController.class);
 
 	public DefaultProjectGenerationController(InitializrMetadataProvider metadataProvider,
-			ProjectGenerationInvoker<ProjectRequest> projectGenerationInvoker) {
-		super(metadataProvider, projectGenerationInvoker);
+			ProjectGenerationInvoker<ProjectRequest> projectGenerationInvoker, ArchetypeProcessor archetypeProcessor) {
+		super(metadataProvider, projectGenerationInvoker, archetypeProcessor);
 	}
 
 	@Override

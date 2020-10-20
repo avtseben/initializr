@@ -26,6 +26,7 @@ import io.spring.initializr.metadata.InitializrMetadataProvider;
 import io.spring.initializr.web.AbstractInitializrControllerIntegrationTests;
 import io.spring.initializr.web.controller.ProjectGenerationController;
 import io.spring.initializr.web.controller.custom.ProjectGenerationControllerCustomRequestIntegrationTests.CustomProjectGenerationConfiguration;
+import io.spring.initializr.web.project.ArchetypeProcessor;
 import io.spring.initializr.web.project.DefaultProjectRequestToDescriptionConverter;
 import io.spring.initializr.web.project.ProjectGenerationInvoker;
 import io.spring.initializr.web.project.ProjectRequestToDescriptionConverter;
@@ -76,10 +77,11 @@ class ProjectGenerationControllerCustomRequestIntegrationTests extends AbstractI
 
 		@Bean
 		CustomProjectGenerationController customProjectGenerationController(InitializrMetadataProvider metadataProvider,
-				ApplicationContext applicationContext) {
+				ApplicationContext applicationContext, ArchetypeProcessor archetypeProcessor) {
 			ProjectGenerationInvoker<CustomProjectRequest> projectGenerationInvoker = new ProjectGenerationInvoker<>(
 					applicationContext, new CustomProjectRequestToDescriptionConverter());
-			return new CustomProjectGenerationController(metadataProvider, projectGenerationInvoker);
+			return new CustomProjectGenerationController(metadataProvider, projectGenerationInvoker,
+					archetypeProcessor);
 		}
 
 		@Bean

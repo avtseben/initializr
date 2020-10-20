@@ -32,6 +32,8 @@ public class ProjectRequest {
 
 	private String name;
 
+	private String archetypeName;
+
 	private String type;
 
 	private String description;
@@ -71,6 +73,14 @@ public class ProjectRequest {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getArchetypeName() {
+		return this.archetypeName;
+	}
+
+	public void setArchetypeName(String archetypeName) {
+		this.archetypeName = archetypeName;
 	}
 
 	public String getType() {

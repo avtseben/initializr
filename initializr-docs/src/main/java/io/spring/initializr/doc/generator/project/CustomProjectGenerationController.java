@@ -20,6 +20,7 @@ import java.util.Map;
 
 import io.spring.initializr.metadata.InitializrMetadataProvider;
 import io.spring.initializr.web.controller.ProjectGenerationController;
+import io.spring.initializr.web.project.ArchetypeProcessor;
 import io.spring.initializr.web.project.ProjectGenerationInvoker;
 
 /**
@@ -31,8 +32,9 @@ import io.spring.initializr.web.project.ProjectGenerationInvoker;
 public class CustomProjectGenerationController extends ProjectGenerationController<CustomProjectRequest> {
 
 	public CustomProjectGenerationController(InitializrMetadataProvider metadataProvider,
-			ProjectGenerationInvoker<CustomProjectRequest> projectGenerationInvoker) {
-		super(metadataProvider, projectGenerationInvoker);
+			ProjectGenerationInvoker<CustomProjectRequest> projectGenerationInvoker,
+			ArchetypeProcessor archetypeProcessor) {
+		super(metadataProvider, projectGenerationInvoker, archetypeProcessor);
 	}
 
 	@Override

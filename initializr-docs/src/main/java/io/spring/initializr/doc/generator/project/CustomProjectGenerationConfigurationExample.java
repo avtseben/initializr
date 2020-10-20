@@ -21,6 +21,7 @@ import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.metadata.InitializrMetadata;
 import io.spring.initializr.metadata.InitializrMetadataProvider;
 import io.spring.initializr.web.controller.ProjectGenerationController;
+import io.spring.initializr.web.project.ArchetypeProcessor;
 import io.spring.initializr.web.project.ProjectGenerationInvoker;
 import io.spring.initializr.web.project.ProjectRequestToDescriptionConverter;
 
@@ -39,10 +40,10 @@ public class CustomProjectGenerationConfigurationExample {
 	// tag::code[]
 	@Bean
 	public CustomProjectGenerationController projectGenerationController(InitializrMetadataProvider metadataProvider,
-			ApplicationContext applicationContext) {
+			ApplicationContext applicationContext, ArchetypeProcessor archetypeProcessor) {
 		ProjectGenerationInvoker<CustomProjectRequest> projectGenerationInvoker = new ProjectGenerationInvoker<>(
 				applicationContext, new CustomProjectRequestToDescriptionConverter());
-		return new CustomProjectGenerationController(metadataProvider, projectGenerationInvoker);
+		return new CustomProjectGenerationController(metadataProvider, projectGenerationInvoker, archetypeProcessor);
 	}
 	// end::code[]
 

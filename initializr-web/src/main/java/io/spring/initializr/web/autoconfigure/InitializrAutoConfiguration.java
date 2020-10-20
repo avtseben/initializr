@@ -37,6 +37,7 @@ import io.spring.initializr.web.controller.DefaultProjectGenerationController;
 import io.spring.initializr.web.controller.ProjectGenerationController;
 import io.spring.initializr.web.controller.ProjectMetadataController;
 import io.spring.initializr.web.controller.SpringCliDistributionController;
+import io.spring.initializr.web.project.ArchetypeProcessor;
 import io.spring.initializr.web.project.DefaultProjectRequestPlatformVersionTransformer;
 import io.spring.initializr.web.project.DefaultProjectRequestToDescriptionConverter;
 import io.spring.initializr.web.project.ProjectGenerationInvoker;
@@ -139,11 +140,12 @@ public class InitializrAutoConfiguration {
 		ProjectGenerationController<ProjectRequest> projectGenerationController(
 				InitializrMetadataProvider metadataProvider,
 				ObjectProvider<ProjectRequestPlatformVersionTransformer> platformVersionTransformer,
-				ApplicationContext applicationContext) {
+				ApplicationContext applicationContext, ArchetypeProcessor archetypeProcessor) {
 			ProjectGenerationInvoker<ProjectRequest> projectGenerationInvoker = new ProjectGenerationInvoker<>(
 					applicationContext, new DefaultProjectRequestToDescriptionConverter(platformVersionTransformer
 							.getIfAvailable(DefaultProjectRequestPlatformVersionTransformer::new)));
-			return new DefaultProjectGenerationController(metadataProvider, projectGenerationInvoker);
+			return new DefaultProjectGenerationController(metadataProvider, projectGenerationInvoker,
+					archetypeProcessor);
 		}
 
 		@Bean

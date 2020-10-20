@@ -35,6 +35,7 @@ import io.spring.initializr.generator.buildsystem.maven.MavenBuildSystem;
 import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.metadata.InitializrMetadata;
 import io.spring.initializr.metadata.InitializrMetadataProvider;
+import io.spring.initializr.web.project.ArchetypeProcessor;
 import io.spring.initializr.web.project.InvalidProjectRequestException;
 import io.spring.initializr.web.project.ProjectGenerationInvoker;
 import io.spring.initializr.web.project.ProjectGenerationResult;
@@ -75,10 +76,13 @@ public abstract class ProjectGenerationController<R extends ProjectRequest> {
 
 	private final ProjectGenerationInvoker<R> projectGenerationInvoker;
 
+	private final ArchetypeProcessor archetypeProcessor;
+
 	public ProjectGenerationController(InitializrMetadataProvider metadataProvider,
-			ProjectGenerationInvoker<R> projectGenerationInvoker) {
+			ProjectGenerationInvoker<R> projectGenerationInvoker, ArchetypeProcessor archetypeProcessor) {
 		this.metadataProvider = metadataProvider;
 		this.projectGenerationInvoker = projectGenerationInvoker;
+		this.archetypeProcessor = archetypeProcessor;
 	}
 
 	@ModelAttribute
@@ -139,6 +143,12 @@ public abstract class ProjectGenerationController<R extends ProjectRequest> {
 				TarArchiveEntry::setMode);
 		return upload(archive, result.getRootDirectory(), generateFileName(request, "tar.gz"),
 				"application/x-compress");
+	}
+
+	@RequestMapping(path = "/archetype", produces = "application/x-compress")
+	public ResponseEntity<byte[]> archetypeTgz(R request) throws IOException {
+		this.archetypeProcessor.process(request);
+		return this.springTgz(request);
 	}
 
 	private TarArchiveOutputStream createTarArchiveOutputStream(OutputStream output) {
